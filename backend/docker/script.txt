@@ -1,0 +1,1 @@
+docker-compose --file "docker/docker-compose-db-test.yml" up -d

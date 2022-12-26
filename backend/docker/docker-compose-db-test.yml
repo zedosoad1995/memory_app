@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:14.5-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: language_db_test
+    ports:
+      - "15432:5432" 
+    volumes:
+      - language_volume:/data/db
+
+volumes:
+  language_volume:
