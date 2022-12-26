@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String       @id @default(uuid())
+  email       String       @unique
+  password    String
+  lastUpdate  DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  words       Word[]
+  collections Collection[]
+}
+
+model Word {
+  id           String      @id @default(uuid())
+  word         String      @unique
+  translation  String
+  relevance    Int
+  knowledge    Int
+  score        Int
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collection   Collection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  userId       String
+  collectionId String?
+}
+
+model Collection {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  words     Word[]
+}
