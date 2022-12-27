@@ -16,10 +16,10 @@ export const checkAuth = async (
 
     const token = authHeader.split(" ")[1];
     const decoded = <{ email: string }>(
-      jwt.verify(token, process.env.JWT_SECRET)
+      jwt.verify(token, process.env.JWT_SECRET as string)
     );
 
-    const user = UserService.getOneByEmail(decoded.email);
+    const user = await UserService.getOneByEmail(decoded.email);
 
     if (!user) throw Error();
 

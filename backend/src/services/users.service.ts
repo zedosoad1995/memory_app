@@ -3,7 +3,7 @@ import { ICreateUser } from "../types/user";
 import bcrypt from "bcryptjs";
 
 export const getOneByEmail = async (email: string) => {
-  return prisma.user.findFirst({
+  return prisma.user.findUnique({
     where: {
       email,
     },
