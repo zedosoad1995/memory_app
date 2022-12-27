@@ -20,9 +20,13 @@ export const login = async (req: Request, res: Response) => {
     return res.status(401).send({ message: AUTH.WRONG_CREDENTIALS });
   }
 
-  const token = jwt.sign({ user }, process.env.JWT_SECRET as string, {
-    expiresIn: process.env.JWT_EXPIRATION as string,
-  });
+  const token = jwt.sign(
+    { email: user.email },
+    process.env.JWT_SECRET as string,
+    {
+      expiresIn: process.env.JWT_EXPIRATION as string,
+    }
+  );
 
   const userToReturn = _.omit(user, ["password"]);
 
