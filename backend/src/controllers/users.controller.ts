@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { createOne } from "../services/users.service";
+import * as UserService from "../services/users.service";
 
-export const create = async (req: Request, res: Response) => {
+export const createOne = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  const newUser = await createOne({ email, password });
+  const newUser = await UserService.createOne({ email, password });
 
   res.status(201).json({ user: newUser });
 };
