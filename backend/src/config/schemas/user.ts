@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { USER } from "../../constants/messages";
+import { isTimezoneValid } from "../../helpers/dateTime";
 
 export const createUserSchema = z.object({
   email: z
@@ -12,4 +13,11 @@ export const createUserSchema = z.object({
     invalid_type_error: USER.FORM.PASSWORD.MUST_BE_STRING,
     required_error: USER.FORM.PASSWORD.IS_REQUIRED,
   }),
+  timezone: z
+    .string({
+      invalid_type_error: USER.FORM.TIMEZONE.MUST_BE_STRING,
+      required_error: USER.FORM.TIMEZONE.IS_REQUIRED,
+    })
+    .refine((arg) => isTimezoneValid(arg), USER.FORM.TIMEZONE.INVALID)
+    .optional(),
 });

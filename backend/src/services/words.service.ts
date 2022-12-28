@@ -1,24 +1,35 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 import prisma from "../../prisma/prisma-client";
 import { ICreateWord, IWordQuery } from "../types/word";
 
-export const getMany = async (email: string) => {
-  const query = {
+export const getMany = async (query: IWordQuery, email: string) => {
+  const mainQuery = {
     where: {
+      ...query,
       user: {
         email,
       },
     },
   };
 
-  return Promise.all([prisma.word.findMany(query), prisma.word.count(query)]);
+  return Promise.all([
+    prisma.word.findMany(mainQuery),
+    prisma.word.count(mainQuery),
+  ]);
 };
 
 export const getOne = async (query: IWordQuery, email: string) => {
-  return prisma.word.findFirst({ where: { ...query, user: { email } } });
+  return prisma.word.findFirst({
+    where: { ...query, user: { email } },
+    select: { collection: true },
+  });
 };
 
-export const createOne = async (data: ICreateWord, email: string) => {
+export const createOne = async (data: ICreateWord, user: User) => {
+  const createdAtLocal = new Date().toLocaleString("en-US", {
+    timeZone: user.timezone ?? undefined,
+  });
+
   const query: Prisma.WordCreateArgs = {
     data: {
       word: data.word,
@@ -26,6 +37,7 @@ export const createOne = async (data: ICreateWord, email: string) => {
       knowledge: data.knowledge,
       relevance: data.relevance,
       score: 0,
+      createdAtLocal,
       collection: data.collectionId
         ? {
             connect: {
@@ -35,7 +47,7 @@ export const createOne = async (data: ICreateWord, email: string) => {
         : {},
       user: {
         connect: {
-          email,
+          id: user.id,
         },
       },
     },

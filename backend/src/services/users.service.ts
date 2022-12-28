@@ -14,14 +14,22 @@ export const createOne = async (data: ICreateUser) => {
   const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS));
   const encryptedPassword = await bcrypt.hash(data.password, salt);
 
+  const lastUpdateLocal = new Date().toLocaleString("en-US", {
+    timeZone: data.timezone,
+  });
+
   return prisma.user.create({
     data: {
       email: data.email,
       password: encryptedPassword,
+      timezone: data.timezone,
+      lastUpdateLocal,
     },
     select: {
       id: true,
       email: true,
+      lastUpdateLocal: true,
+      timezone: true,
     },
   });
 };

@@ -31,3 +31,12 @@ export const createWordSchema = z.object({
     })
     .optional(),
 });
+
+export const updateWordScoresSchema = z.object({
+  collectionId: z
+    .string({
+      invalid_type_error: WORD.FORM.COLLECTION_ID.MUST_BE_STRING,
+      required_error: WORD.FORM.COLLECTION_ID.IS_REQUIRED,
+    })
+    .optional(),
+});

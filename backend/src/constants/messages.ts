@@ -17,6 +17,10 @@ export const USER = {
   FORM: {
     EMAIL: { ...VALIDATION_MSGS("email"), INVALID: "email format is invalid" },
     PASSWORD: VALIDATION_MSGS("password"),
+    TIMEZONE: {
+      ...VALIDATION_MSGS("timezone"),
+      INVALID: "timezone name does not exist",
+    },
   },
 };
 
