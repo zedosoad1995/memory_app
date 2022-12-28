@@ -21,3 +21,13 @@ export const createUserSchema = z.object({
     .refine((arg) => isTimezoneValid(arg), USER.FORM.TIMEZONE.INVALID)
     .optional(),
 });
+
+export const updateUserSchema = z.object({
+  timezone: z
+    .string({
+      invalid_type_error: USER.FORM.TIMEZONE.MUST_BE_STRING,
+      required_error: USER.FORM.TIMEZONE.IS_REQUIRED,
+    })
+    .refine((arg) => isTimezoneValid(arg), USER.FORM.TIMEZONE.INVALID)
+    .optional(),
+});

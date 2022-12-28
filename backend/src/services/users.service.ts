@@ -1,5 +1,5 @@
 import prisma from "../../prisma/prisma-client";
-import { ICreateUser } from "../types/user";
+import { ICreateUser, IEditUser } from "../types/user";
 import bcrypt from "bcryptjs";
 
 export const getOneByEmail = async (email: string) => {
@@ -31,5 +31,22 @@ export const createOne = async (data: ICreateUser) => {
       lastUpdateLocal: true,
       timezone: true,
     },
+  });
+};
+
+export const updateOne = async (data: IEditUser, email: string) => {
+  return prisma.user.update({
+    data: {
+      timezone: data.timezone
+    },
+    select: {
+      id: true,
+      email: true,
+      lastUpdateLocal: true,
+      timezone: true,
+    },
+    where: {
+      email
+    }
   });
 };

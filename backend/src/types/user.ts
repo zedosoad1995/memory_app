@@ -3,3 +3,7 @@ export interface ICreateUser {
   password: string;
   timezone?: string;
 }
+
+export interface IEditUser {
+  timezone?: string;
+}
