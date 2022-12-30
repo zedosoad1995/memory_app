@@ -91,3 +91,10 @@ export const updateOne = async (data: IUpdateWord, wordId: string) => {
 
   return prisma.word.update(query);
 };
+
+export const deleteOne = async (id: string) =>
+  prisma.word.delete({
+    where: {
+      id,
+    },
+  });

@@ -6,6 +6,7 @@ import {
 } from "../config/schemas/word";
 import {
   createOne,
+  deleteOne,
   getDailyWords,
   getMany,
   updateOne,
@@ -26,5 +27,6 @@ router.post(
   validateForm(updateWordScoresSchema),
   updateScores
 );
+router.delete("/:id", checkAuth, deleteOne);
 
 export default router;

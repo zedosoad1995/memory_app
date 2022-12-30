@@ -54,3 +54,10 @@ export const updateOne = async (data: IEditUser, email: string) => {
     },
   });
 };
+
+export const deleteOne = async (id: string) =>
+  prisma.user.delete({
+    where: {
+      id,
+    },
+  });

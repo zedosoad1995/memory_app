@@ -22,3 +22,11 @@ export const updateOne = async (req: Request, res: Response) => {
 
   res.status(200).json({ user: updatedUser });
 };
+
+export const deleteOne = async (req: Request, res: Response) => {
+  const { user: loggedUser } = res.locals;
+
+  await UserService.deleteOne(loggedUser.id);
+
+  res.status(204).json({});
+};
