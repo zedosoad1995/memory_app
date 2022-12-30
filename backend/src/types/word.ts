@@ -17,6 +17,6 @@ export interface IUpdateWord {
 export interface IWordQuery {
   id?: string;
   word?: string;
-  collectionId?: string;
+  collectionId?: string | null;
   isSeen?: boolean;
 }

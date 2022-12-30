@@ -28,7 +28,7 @@ export const USER = {
 
 export const WORD = {
   NOT_FOUND: "word not found",
-  DUPLICATE_WORD: "Word already exists",
+  DUPLICATE_WORD: "word already exists",
   FORM: {
     WORD: VALIDATION_MSGS("word"),
     TRANSLATION: VALIDATION_MSGS("translation"),
@@ -41,6 +41,7 @@ export const WORD = {
 
 export const COLLECTION = {
   NOT_FOUND: "collection not found",
+  DUPLICATE_COLLECTION: "collection already exists",
   FORM: {
     NAME: VALIDATION_MSGS("name"),
   },

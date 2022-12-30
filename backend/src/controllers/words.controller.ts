@@ -103,6 +103,7 @@ export const updateScores = async (req: Request, res: Response) => {
 
 export const updateOne = async (req: Request, res: Response) => {
   const { user: loggedUser } = res.locals as unknown as { user: User };
+  const { word: wordLabel } = req.body;
 
   const word = await WordService.getOne(
     { id: req.params.id },
@@ -111,6 +112,17 @@ export const updateOne = async (req: Request, res: Response) => {
 
   if (!word) {
     throw new HttpException(404, WORD.NOT_FOUND);
+  }
+
+  if (wordLabel) {
+    const existingWord = await WordService.getOne(
+      { collectionId: word.collectionId, word: wordLabel },
+      loggedUser.email
+    );
+
+    if (existingWord && existingWord.id != req.params.id) {
+      throw new HttpException(400, WORD.DUPLICATE_WORD);
+    }
   }
 
   const editedWord = await WordService.updateOne(req.body, req.params.id);

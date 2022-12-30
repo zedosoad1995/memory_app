@@ -1,6 +1,10 @@
 import { Prisma } from "@prisma/client";
 import prisma from "../../prisma/prisma-client";
-import { ICreateCollection } from "../types/collection";
+import {
+  ICollectionQuery,
+  ICreateCollection,
+  IUpdateCollection,
+} from "../types/collection";
 import { IPagination } from "../types/query";
 
 export const getMany = (email: string, pagination: IPagination = {}) => {
@@ -36,10 +40,10 @@ export const getMany = (email: string, pagination: IPagination = {}) => {
   ]);
 };
 
-export const getOne = async (id: string, email: string) =>
+export const getOne = async (query: ICollectionQuery, email: string) =>
   prisma.collection.findFirst({
     where: {
-      id,
+      ...query,
       user: {
         email,
       },
@@ -59,6 +63,22 @@ export const createOne = async (data: ICreateCollection, email: string) => {
   };
 
   return prisma.collection.create(query);
+};
+
+export const updateOne = async (
+  data: IUpdateCollection,
+  collectionId: string
+) => {
+  const query: Prisma.CollectionUpdateArgs = {
+    data: {
+      name: data.name,
+    },
+    where: {
+      id: collectionId,
+    },
+  };
+
+  return prisma.collection.update(query);
 };
 
 export const deleteOne = async (id: string) =>

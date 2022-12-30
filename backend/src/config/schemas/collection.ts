@@ -7,3 +7,11 @@ export const createCollectionSchema = z.object({
     required_error: COLLECTION.FORM.NAME.IS_REQUIRED,
   }),
 });
+
+export const updateCollectionSchema = z.object({
+  name: z
+    .string({
+      invalid_type_error: COLLECTION.FORM.NAME.MUST_BE_STRING,
+    })
+    .optional(),
+});

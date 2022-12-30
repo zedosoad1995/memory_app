@@ -39,7 +39,6 @@ export const getMany = async (
 export const getOne = async (query: IWordQuery, email: string) => {
   return prisma.word.findFirst({
     where: { ...query, user: { email } },
-    select: { collection: true },
   });
 };
 
