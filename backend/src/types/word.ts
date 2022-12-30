@@ -6,7 +6,16 @@ export interface ICreateWord {
   collectionId?: string;
 }
 
+export interface IUpdateWord {
+  word?: string;
+  translation?: string;
+  knowledge?: number;
+  relevance?: number;
+  isSeen?: boolean;
+}
+
 export interface IWordQuery {
+  id?: string;
   word?: string;
   collectionId?: string;
 }

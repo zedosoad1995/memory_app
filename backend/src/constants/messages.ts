@@ -1,6 +1,7 @@
 const VALIDATION_MSGS = (fieldName: string) => ({
   MUST_BE_STRING: `${fieldName} must be a string`,
   MUST_BE_NUMBER: `${fieldName} must be a number`,
+  MUST_BE_BOOLEAN: `${fieldName} must be a boolean (true or false)`,
   MIN_VALUE: (value: number) =>
     `${fieldName} must be greater or equal to ${value}`,
   MAX_VALUE: (value: number) =>
@@ -26,6 +27,7 @@ export const USER = {
 };
 
 export const WORD = {
+  NOT_FOUND: "word not found",
   DUPLICATE_WORD: "Word already exists",
   FORM: {
     WORD: VALIDATION_MSGS("word"),
@@ -33,6 +35,7 @@ export const WORD = {
     KNOWLEDGE: VALIDATION_MSGS("knowledge"),
     RELEVANCE: VALIDATION_MSGS("relevance"),
     COLLECTION_ID: VALIDATION_MSGS("collectionId"),
+    IS_SEEN: VALIDATION_MSGS("isSeen"),
   },
 };
 

@@ -58,14 +58,34 @@ export const updateScores = async (req: Request, res: Response) => {
     timeZone: loggedUser.timezone ?? undefined,
   });
 
-  let nDays = calculateDaysDiff(loggedUser.lastUpdateLocal, currentDateLocal);
+  let nDaysSinceLastUpdate = calculateDaysDiff(
+    loggedUser.lastUpdateLocal,
+    currentDateLocal
+  );
 
   await updateWordsScore(
     collectionId,
     loggedUser.email,
     currentDateLocal,
-    nDays
+    nDaysSinceLastUpdate
   );
 
   res.status(204).json({});
+};
+
+export const updateOne = async (req: Request, res: Response) => {
+  const { user: loggedUser } = res.locals as unknown as { user: User };
+
+  const word = await WordService.getOne(
+    { id: req.params.id },
+    loggedUser.email
+  );
+
+  if (!word) {
+    throw new HttpException(404, WORD.NOT_FOUND);
+  }
+
+  const editedWord = await WordService.updateOne(req.body, req.params.id);
+
+  res.status(200).json({ word: editedWord });
 };

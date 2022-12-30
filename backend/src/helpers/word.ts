@@ -6,7 +6,7 @@ export const updateWordsScore = async (
   collectionId: string,
   email: string,
   currentDateLocal: string,
-  nDays: number
+  nDaysSinceLastUpdate: number
 ) => {
   const [words, ...other] = await WordService.getMany({ collectionId }, email);
 
@@ -17,15 +17,17 @@ export const updateWordsScore = async (
         currentDateLocal
       );
 
-      const nDaysReal = Math.min(nDays, nDaysWordCreation);
+      const nDaysReal = Math.min(nDaysSinceLastUpdate, nDaysWordCreation);
       if (nDaysReal <= 0) continue;
 
-      const score =
-        word.score + (word.relevance + (6 - word.knowledge)) * nDaysReal;
+      const score = word.isSeen
+        ? 0
+        : word.score + (word.relevance + (6 - word.knowledge)) * nDaysReal;
 
       await tx.word.update({
         data: {
           score,
+          isSeen: false,
         },
         where: { id: word.id },
       });

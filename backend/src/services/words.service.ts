@@ -1,7 +1,7 @@
 import { Prisma, User } from "@prisma/client";
 import prisma from "../../prisma/prisma-client";
 import { IPagination } from "../types/query";
-import { ICreateWord, IWordQuery } from "../types/word";
+import { ICreateWord, IUpdateWord, IWordQuery } from "../types/word";
 
 export const getMany = async (
   query: IWordQuery,
@@ -52,6 +52,7 @@ export const createOne = async (data: ICreateWord, user: User) => {
       relevance: data.relevance,
       score: 0,
       createdAtLocal,
+      isSeen: false,
       collection: data.collectionId
         ? {
             connect: {
@@ -68,4 +69,21 @@ export const createOne = async (data: ICreateWord, user: User) => {
   };
 
   return prisma.word.create(query);
+};
+
+export const updateOne = async (data: IUpdateWord, wordId: string) => {
+  const query: Prisma.WordUpdateArgs = {
+    data: {
+      word: data.word,
+      translation: data.translation,
+      knowledge: data.knowledge,
+      relevance: data.relevance,
+      isSeen: data.isSeen,
+    },
+    where: {
+      id: wordId,
+    },
+  };
+
+  return prisma.word.update(query);
 };
