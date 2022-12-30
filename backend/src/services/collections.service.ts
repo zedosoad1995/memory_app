@@ -1,19 +1,38 @@
 import { Prisma } from "@prisma/client";
 import prisma from "../../prisma/prisma-client";
 import { ICreateCollection } from "../types/collection";
+import { IPagination } from "../types/query";
 
-export const getMany = (email: string) => {
-  const mainQuery = {
+export const getMany = (email: string, pagination: IPagination = {}) => {
+  const baseQuery = {
     where: {
       user: {
         email,
       },
     },
+    orderBy: pagination.orderBy
+      ? {
+          [pagination.orderBy]: pagination.order,
+        }
+      : {},
+    skip: pagination.offset,
+    take: pagination.limit,
+  };
+
+  const findManyQuery = {
+    ...baseQuery,
+    orderBy: pagination.orderBy
+      ? {
+          [pagination.orderBy]: pagination.order,
+        }
+      : {},
+    skip: pagination.offset,
+    take: pagination.limit,
   };
 
   return Promise.all([
-    prisma.collection.findMany(mainQuery),
-    prisma.collection.count(mainQuery),
+    prisma.collection.findMany(findManyQuery),
+    prisma.collection.count(baseQuery),
   ]);
 };
 

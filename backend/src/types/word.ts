@@ -18,4 +18,5 @@ export interface IWordQuery {
   id?: string;
   word?: string;
   collectionId?: string;
+  isSeen?: boolean;
 }

@@ -1,13 +1,28 @@
 import { Request, Response } from "express";
 import { COLLECTION } from "../constants/messages";
 import { HttpException } from "../helpers/exception";
+import {
+  calculateOffset,
+  parseLimit,
+  parseOrder,
+  parseOrderBy,
+  parsePage,
+} from "../helpers/query";
 import * as CollectionService from "../services/collections.service";
 
 export const getMany = async (req: Request, res: Response) => {
   const { user: loggedUser } = res.locals;
 
+  const orderBy = parseOrderBy(req.query.orderBy as string | undefined, "name");
+  const order = parseOrder(req.query.order as string | undefined, "asc");
+  const limit = parseLimit(req.query.limit as string | undefined);
+  const page = parsePage(req.query.page as string | undefined);
+  const offset = calculateOffset(page, limit);
+  const pagination = { limit, offset, order, orderBy };
+
   const [collections, total] = await CollectionService.getMany(
-    loggedUser.email
+    loggedUser.email,
+    pagination
   );
 
   res.status(200).json({ collections, total });

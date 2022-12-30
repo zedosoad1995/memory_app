@@ -9,7 +9,7 @@ export const getMany = async (
   pagination: IPagination = {},
   advancedQueries: Prisma.WordWhereInput = {}
 ) => {
-  const mainQuery = {
+  const baseQuery = {
     where: {
       ...query,
       ...advancedQueries,
@@ -17,6 +17,10 @@ export const getMany = async (
         email,
       },
     },
+  };
+
+  const findManyQuery = {
+    ...baseQuery,
     orderBy: pagination.orderBy
       ? {
           [pagination.orderBy]: pagination.order,
@@ -27,8 +31,8 @@ export const getMany = async (
   };
 
   return Promise.all([
-    prisma.word.findMany(mainQuery),
-    prisma.word.count(mainQuery),
+    prisma.word.findMany(findManyQuery),
+    prisma.word.count(baseQuery),
   ]);
 };
 

@@ -3,17 +3,32 @@ import { Request, Response } from "express";
 import { WORD } from "../constants/messages";
 import { calculateDaysDiff } from "../helpers/dateTime";
 import { HttpException } from "../helpers/exception";
-import { greaterThan } from "../helpers/query";
+import {
+  calculateOffset,
+  greaterThan,
+  parseBoolean,
+  parseLimit,
+  parseOrder,
+  parseOrderBy,
+  parsePage,
+} from "../helpers/query";
 import { updateWordsScore } from "../helpers/word";
 import * as WordService from "../services/words.service";
 
 export const getMany = async (req: Request, res: Response) => {
   const { user: loggedUser } = res.locals;
   const collectionId = req.query.collectionId as string | undefined;
+  const orderBy = parseOrderBy(req.query.orderBy as string | undefined, "word");
+  const order = parseOrder(req.query.order as string | undefined, "asc");
+  const limit = parseLimit(req.query.limit as string | undefined);
+  const page = parsePage(req.query.page as string | undefined);
+  const offset = calculateOffset(page, limit);
+  const pagination = { limit, offset, order, orderBy };
 
   const [words, total] = await WordService.getMany(
     { collectionId },
-    loggedUser.email
+    loggedUser.email,
+    pagination
   );
 
   res.status(200).json({ words, total });
@@ -22,11 +37,24 @@ export const getMany = async (req: Request, res: Response) => {
 export const getDailyWords = async (req: Request, res: Response) => {
   const { user: loggedUser } = res.locals as unknown as { user: User };
   const collectionId = req.query.collectionId as string | undefined;
+  const isSeen = parseBoolean(req.query.isSeen as string | undefined);
+
+  const limit = Math.min(
+    parseLimit(req.query.limit as string | undefined),
+    loggedUser.numDailyWords
+  );
+  const page = parsePage(req.query.page as string | undefined);
+  const offset = calculateOffset(page, limit);
 
   const [words, total] = await WordService.getMany(
-    { collectionId },
+    { collectionId, isSeen },
     loggedUser.email,
-    { order: "desc", orderBy: "score", limit: loggedUser.numDailyWords },
+    {
+      order: "desc",
+      orderBy: "score",
+      limit,
+      offset,
+    },
     greaterThan("score", 0)
   );
 
