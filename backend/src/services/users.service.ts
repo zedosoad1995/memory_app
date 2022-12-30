@@ -23,6 +23,7 @@ export const createOne = async (data: ICreateUser) => {
       email: data.email,
       password: encryptedPassword,
       timezone: data.timezone,
+      numDailyWords: data.numDailyWords,
       lastUpdateLocal,
     },
     select: {
@@ -30,6 +31,7 @@ export const createOne = async (data: ICreateUser) => {
       email: true,
       lastUpdateLocal: true,
       timezone: true,
+      numDailyWords: true,
     },
   });
 };
@@ -37,16 +39,18 @@ export const createOne = async (data: ICreateUser) => {
 export const updateOne = async (data: IEditUser, email: string) => {
   return prisma.user.update({
     data: {
-      timezone: data.timezone
+      timezone: data.timezone,
+      numDailyWords: data.numDailyWords,
     },
     select: {
       id: true,
       email: true,
       lastUpdateLocal: true,
       timezone: true,
+      numDailyWords: true,
     },
     where: {
-      email
-    }
+      email,
+    },
   });
 };

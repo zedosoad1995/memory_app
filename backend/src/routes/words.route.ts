@@ -5,6 +5,7 @@ import {
 } from "../config/schemas/word";
 import {
   createOne,
+  getDailyWords,
   getMany,
   updateScores,
 } from "../controllers/words.controller";
@@ -14,6 +15,7 @@ import { validateForm } from "../middlewares/validateForm";
 const router = Router();
 
 router.get("/", checkAuth, getMany);
+router.get("/daily", checkAuth, getDailyWords);
 router.post("/", checkAuth, validateForm(createWordSchema), createOne);
 router.post(
   "/scores",

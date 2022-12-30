@@ -21,6 +21,7 @@ export const USER = {
       ...VALIDATION_MSGS("timezone"),
       INVALID: "timezone name does not exist",
     },
+    NUM_DAILY_WORDS: VALIDATION_MSGS("numDailyWords"),
   },
 };
 
@@ -32,5 +33,12 @@ export const WORD = {
     KNOWLEDGE: VALIDATION_MSGS("knowledge"),
     RELEVANCE: VALIDATION_MSGS("relevance"),
     COLLECTION_ID: VALIDATION_MSGS("collectionId"),
+  },
+};
+
+export const COLLECTION = {
+  NOT_FOUND: "collection not found",
+  FORM: {
+    NAME: VALIDATION_MSGS("name"),
   },
 };

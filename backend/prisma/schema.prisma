@@ -17,10 +17,12 @@ model User {
   password        String
   lastUpdateLocal String
   timezone        String?
+  numDailyWords   Int
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
   words           Word[]
   collections     Collection[]
+  tags            Tag[]
 }
 
 model Word {
@@ -31,6 +33,7 @@ model Word {
   knowledge      Int
   score          Int
   createdAtLocal String
+  tags           Tag[]
   user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   collection     Collection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
   createdAt      DateTime    @default(now())
@@ -43,10 +46,25 @@ model Word {
 
 model Collection {
   id        String   @id @default(uuid())
-  name      String   @unique
+  name      String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String
   words     Word[]
+  tags      Tag[]
+  @@unique([name, userId])
+}
+
+model Tag {
+  id           String     @id @default(uuid())
+  name         String
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  collectionId String
+  userId       String
+  words        Word[]
+  @@unique([name, userId, collectionId])
 }

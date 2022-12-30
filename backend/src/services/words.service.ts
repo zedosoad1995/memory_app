@@ -1,15 +1,29 @@
 import { Prisma, User } from "@prisma/client";
 import prisma from "../../prisma/prisma-client";
+import { IPagination } from "../types/query";
 import { ICreateWord, IWordQuery } from "../types/word";
 
-export const getMany = async (query: IWordQuery, email: string) => {
+export const getMany = async (
+  query: IWordQuery,
+  email: string,
+  pagination: IPagination = {},
+  advancedQueries: Prisma.WordWhereInput = {}
+) => {
   const mainQuery = {
     where: {
       ...query,
+      ...advancedQueries,
       user: {
         email,
       },
     },
+    orderBy: pagination.orderBy
+      ? {
+          [pagination.orderBy]: pagination.order,
+        }
+      : {},
+    skip: pagination.offset,
+    take: pagination.limit,
   };
 
   return Promise.all([
