@@ -1,8 +1,15 @@
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useRef, useState } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 
-const PasswordField = () => {
+interface IProps {
+  register?: UseFormRegisterReturn<string>;
+  error?: boolean | undefined;
+  helperText?: React.ReactNode;
+}
+
+const PasswordField: React.FC<IProps> = ({ register, error, helperText }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -21,6 +28,8 @@ const PasswordField = () => {
       type={showPassword ? "text" : "password"}
       variant="outlined"
       inputRef={inputRef}
+      error={error}
+      helperText={helperText}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
@@ -30,6 +39,7 @@ const PasswordField = () => {
           </InputAdornment>
         ),
       }}
+      {...register}
     />
   );
 };
