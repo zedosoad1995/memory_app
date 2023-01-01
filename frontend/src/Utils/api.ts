@@ -16,7 +16,7 @@ instance.interceptors.request.use((config: AxiosRequestConfig) => {
 
 instance.interceptors.response.use(
   (response: AxiosResponse) => {
-    return response;
+    return response.data;
   },
   (error: AxiosError) => {
     if (error.response?.status === 401) {

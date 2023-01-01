@@ -26,13 +26,6 @@ export const createOne = async (data: ICreateUser) => {
       numDailyWords: data.numDailyWords,
       lastUpdateLocal,
     },
-    select: {
-      id: true,
-      email: true,
-      lastUpdateLocal: true,
-      timezone: true,
-      numDailyWords: true,
-    },
   });
 };
 

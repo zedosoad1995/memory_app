@@ -1,26 +1,57 @@
-import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Avatar,
+  Button,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { DashboardNavbarRoot } from "./styles";
+import { AccountPopover } from "./components/AccountPopover/AccountPopover";
+import { useRef, useState } from "react";
 
 const Navbar = () => {
+  const avatarRef = useRef<HTMLInputElement>(null);
+
+  const [openAccountMenu, setOpenAccountMenu] = useState(false);
+
+  const handleClickAvatar = () => {
+    setOpenAccountMenu(true);
+  };
+
+  const handleCloseAvatarMenu = () => {
+    setOpenAccountMenu(false);
+  };
+
   return (
     <>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
+      <DashboardNavbarRoot position="static">
+        <Toolbar
+          disableGutters
+          sx={{
+            minHeight: 64,
+            px: 2,
+            justifyContent: "space-between",
+          }}
+        >
+          <IconButton sx={{ mr: 2 }}>
+            <MenuIcon fontSize="small" />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
-          </Typography>
-          <Button color="inherit">Login</Button>
+          <Avatar
+            onClick={handleClickAvatar}
+            ref={avatarRef}
+            sx={{
+              cursor: "pointer",
+            }}
+          />
         </Toolbar>
-      </AppBar>
+      </DashboardNavbarRoot>
+      <AccountPopover
+        anchorEl={avatarRef.current}
+        open={openAccountMenu}
+        onClose={handleCloseAvatarMenu}
+      />
     </>
   );
 };

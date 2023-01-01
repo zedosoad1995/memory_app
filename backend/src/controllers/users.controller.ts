@@ -1,5 +1,6 @@
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
+import _ from "underscore";
 import { USER } from "../constants/messages";
 import { HttpException } from "../helpers/exception";
 import * as UserService from "../services/users.service";
@@ -19,7 +20,7 @@ export const createOne = async (req: Request, res: Response) => {
     numDailyWords,
   });
 
-  res.status(201).json({ user: newUser });
+  res.status(201).json({ user: _.omit(newUser, ["password"]) });
 };
 
 export const updateOne = async (req: Request, res: Response) => {

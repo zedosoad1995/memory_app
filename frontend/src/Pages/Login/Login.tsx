@@ -10,6 +10,7 @@ import { Navigate, useNavigate } from "react-router";
 import PasswordField from "../../Components/PasswordField/PasswordField";
 import { login } from "../../Services/auth";
 import { useForm } from "react-hook-form";
+import { isAuth, setToken, setUser } from "../../Utils/auth";
 
 interface IFormData {
   email: string;
@@ -27,15 +28,12 @@ const Login = () => {
 
   const onSubmit = async ({ email, password }: IFormData) => {
     const res = await login(email, password);
-    localStorage.setItem("token", res.data.token);
-    localStorage.setItem("user", JSON.stringify(res.data.user));
+    setToken(res.token);
+    setUser(res.user);
     navigate("/");
   };
 
-  if (
-    Boolean(localStorage.getItem("token")) &&
-    Boolean(localStorage.getItem("user"))
-  ) {
+  if (isAuth()) {
     return <Navigate to="/" />;
   }
 

@@ -35,7 +35,8 @@ const Register = () => {
   };
 
   const onSubmit = async ({ email, password }: IFormData) => {
-    await signUp(email, password, 3);
+    const lala = await signUp(email, password, 3);
+    console.log(lala.user);
     toast.success("User successfully created.");
     navigate("/login");
   };
