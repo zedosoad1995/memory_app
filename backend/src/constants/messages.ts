@@ -15,6 +15,7 @@ export const AUTH = {
 };
 
 export const USER = {
+  DUPLICATE_USER: "user already exists",
   FORM: {
     EMAIL: { ...VALIDATION_MSGS("email"), INVALID: "email format is invalid" },
     PASSWORD: VALIDATION_MSGS("password"),

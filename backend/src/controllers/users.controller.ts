@@ -1,9 +1,16 @@
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
+import { USER } from "../constants/messages";
+import { HttpException } from "../helpers/exception";
 import * as UserService from "../services/users.service";
 
 export const createOne = async (req: Request, res: Response) => {
   const { email, password, timezone, numDailyWords } = req.body;
+
+  const user = await UserService.getOneByEmail(email);
+  if (user) {
+    throw new HttpException(409, USER.DUPLICATE_USER);
+  }
 
   const newUser = await UserService.createOne({
     email,

@@ -12,12 +12,12 @@ export const login = async (req: Request, res: Response) => {
   const user = await UserService.getOneByEmail(email);
 
   if (!user) {
-    throw new HttpException(401, AUTH.WRONG_CREDENTIALS);
+    throw new HttpException(404, AUTH.WRONG_CREDENTIALS);
   }
 
   const passwordMatch = await bcrypt.compare(password, user.password);
   if (!passwordMatch) {
-    return res.status(401).send({ message: AUTH.WRONG_CREDENTIALS });
+    return res.status(404).send({ message: AUTH.WRONG_CREDENTIALS });
   }
 
   const token = jwt.sign(

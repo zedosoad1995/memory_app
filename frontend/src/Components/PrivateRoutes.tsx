@@ -3,7 +3,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 const PrivateRoutes = () => {
   const location = useLocation();
 
-  if (false) {
+  if (!localStorage.getItem("token") || !localStorage.getItem("user")) {
     return <Navigate to={"/login"} />;
   }
 

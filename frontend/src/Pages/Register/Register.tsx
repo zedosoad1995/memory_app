@@ -6,11 +6,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import PasswordField from "../../Components/PasswordField/PasswordField";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../../Config/Schemas/auth";
+import { register as signUp } from "../../Services/auth";
+import { toast } from "react-hot-toast";
 
 interface IFormData {
   email: string;
@@ -32,12 +34,15 @@ const Register = () => {
     navigate("/login");
   };
 
-  console.log(errors);
-
   const onSubmit = async ({ email, password }: IFormData) => {
-    //const res = await login(email, password);
-    console.log(email, password);
+    await signUp(email, password, 3);
+    toast.success("User successfully created.");
+    navigate("/login");
   };
+
+  if (localStorage.getItem("token") && localStorage.getItem("user")) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <Container maxWidth="sm">

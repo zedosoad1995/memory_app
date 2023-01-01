@@ -70,7 +70,7 @@ export const createOne = async (req: Request, res: Response) => {
     loggedUser.email
   );
   if (existingWord) {
-    throw new HttpException(400, WORD.DUPLICATE_WORD);
+    throw new HttpException(409, WORD.DUPLICATE_WORD);
   }
 
   const newWord = await WordService.createOne(req.body, loggedUser);
@@ -121,7 +121,7 @@ export const updateOne = async (req: Request, res: Response) => {
     );
 
     if (existingWord && existingWord.id != req.params.id) {
-      throw new HttpException(400, WORD.DUPLICATE_WORD);
+      throw new HttpException(409, WORD.DUPLICATE_WORD);
     }
   }
 

@@ -38,7 +38,7 @@ export const createOne = async (req: Request, res: Response) => {
     loggedUser.email
   );
   if (existingCollection) {
-    throw new HttpException(400, COLLECTION.DUPLICATE_COLLECTION);
+    throw new HttpException(409, COLLECTION.DUPLICATE_COLLECTION);
   }
 
   const newCollection = await CollectionService.createOne(
@@ -69,7 +69,7 @@ export const updateOne = async (req: Request, res: Response) => {
     );
 
     if (existingCollection && existingCollection.id !== req.params.id) {
-      throw new HttpException(400, COLLECTION.DUPLICATE_COLLECTION);
+      throw new HttpException(409, COLLECTION.DUPLICATE_COLLECTION);
     }
   }
 

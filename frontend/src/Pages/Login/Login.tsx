@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import PasswordField from "../../Components/PasswordField/PasswordField";
 import { login } from "../../Services/auth";
 import { useForm } from "react-hook-form";
@@ -27,8 +27,17 @@ const Login = () => {
 
   const onSubmit = async ({ email, password }: IFormData) => {
     const res = await login(email, password);
-    console.log(res);
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+    navigate("/");
   };
+
+  if (
+    Boolean(localStorage.getItem("token")) &&
+    Boolean(localStorage.getItem("user"))
+  ) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <Container maxWidth="sm">
