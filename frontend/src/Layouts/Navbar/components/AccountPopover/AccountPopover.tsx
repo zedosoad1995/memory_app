@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { Box, MenuItem, MenuList, Popover, Typography } from "@mui/material";
 import { getUser, logout } from "../../../../Utils/auth";
 import { useNavigate } from "react-router";

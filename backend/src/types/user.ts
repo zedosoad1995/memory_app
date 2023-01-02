@@ -3,6 +3,7 @@ export interface ICreateUser {
   password: string;
   numDailyWords: number;
   timezone?: string;
+  collectionName?: string;
 }
 
 export interface IEditUser {

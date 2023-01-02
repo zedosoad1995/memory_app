@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { USER } from "../../constants/messages";
+import { COLLECTION, USER } from "../../constants/messages";
 import { isTimezoneValid } from "../../helpers/dateTime";
 
 export const createUserSchema = z.object({
@@ -24,6 +24,11 @@ export const createUserSchema = z.object({
       invalid_type_error: USER.FORM.TIMEZONE.MUST_BE_STRING,
     })
     .refine((arg) => isTimezoneValid(arg), USER.FORM.TIMEZONE.INVALID)
+    .optional(),
+  collectionName: z
+    .string({
+      invalid_type_error: COLLECTION.FORM.NAME.MUST_BE_STRING,
+    })
     .optional(),
 });
 

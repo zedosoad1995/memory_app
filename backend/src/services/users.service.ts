@@ -18,14 +18,29 @@ export const createOne = async (data: ICreateUser) => {
     timeZone: data.timezone,
   });
 
-  return prisma.user.create({
-    data: {
-      email: data.email,
-      password: encryptedPassword,
-      timezone: data.timezone,
-      numDailyWords: data.numDailyWords,
-      lastUpdateLocal,
-    },
+  return prisma.$transaction(async (tx) => {
+    await tx.user.create({
+      data: {
+        email: data.email,
+        password: encryptedPassword,
+        timezone: data.timezone,
+        numDailyWords: data.numDailyWords,
+        lastUpdateLocal,
+      },
+    });
+
+    if (data.collectionName) {
+      return tx.collection.create({
+        data: {
+          name: data.collectionName,
+          user: {
+            connect: {
+              email: data.email,
+            },
+          },
+        },
+      });
+    }
   });
 };
 

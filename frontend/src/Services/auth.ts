@@ -11,12 +11,14 @@ export const login = async (
 export const register = async (
   email: string,
   password: string,
-  numDailyWords: number
+  numDailyWords: number,
+  collectionName: string
 ): Promise<{ user: IUser }> => {
   return Api.post("/users", {
     email,
     password,
     numDailyWords,
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    collectionName,
   });
 };

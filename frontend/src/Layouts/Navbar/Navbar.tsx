@@ -1,11 +1,4 @@
-import {
-  AppBar,
-  Avatar,
-  Button,
-  IconButton,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { Avatar, IconButton, Toolbar } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { DashboardNavbarRoot } from "./styles";
 import { AccountPopover } from "./components/AccountPopover/AccountPopover";

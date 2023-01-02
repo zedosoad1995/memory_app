@@ -6,7 +6,7 @@ import { HttpException } from "../helpers/exception";
 import * as UserService from "../services/users.service";
 
 export const createOne = async (req: Request, res: Response) => {
-  const { email, password, timezone, numDailyWords } = req.body;
+  const { email, password, timezone, numDailyWords, collectionName } = req.body;
 
   const user = await UserService.getOneByEmail(email);
   if (user) {
@@ -18,6 +18,7 @@ export const createOne = async (req: Request, res: Response) => {
     password,
     timezone,
     numDailyWords,
+    collectionName,
   });
 
   res.status(201).json({ user: _.omit(newUser, ["password"]) });
