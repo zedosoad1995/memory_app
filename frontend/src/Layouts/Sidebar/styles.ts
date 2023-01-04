@@ -1,9 +1,9 @@
-import { Paper } from "@mui/material";
+import { Drawer, Paper } from "@mui/material";
 import { styled } from "@mui/system";
 import { SIDEBAR } from "../../Theme/constants";
 import palette from "../../Theme/palette";
 
-export const SidebarContainer = styled(Paper)({
+export const SidebarPaper = styled(Paper)({
   backgroundColor: palette.neutral[900],
   color: "#FFFFFF",
   width: SIDEBAR.WIDTH,
@@ -17,5 +17,14 @@ export const SidebarContainer = styled(Paper)({
 
   "&.hidden": {
     transform: `translateX(-${SIDEBAR.WIDTH}px)`,
+  },
+});
+
+export const SidebarDrawer = styled(Drawer)({
+  "& .MuiPaper-root": {
+    transform: `translateX(-${SIDEBAR.WIDTH}px)`,
+    backgroundColor: palette.neutral[900],
+    color: "#FFFFFF",
+    width: SIDEBAR.WIDTH,
   },
 });

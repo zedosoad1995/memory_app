@@ -3,8 +3,8 @@ import HomeIcon from "@mui/icons-material/Home";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SidebarItem from "./components/SidebarItem";
-import { SidebarContainer } from "./styles";
-import { useState } from "react";
+import { SidebarDrawer, SidebarPaper } from "./styles";
+import { SIDEBAR } from "../../Theme/constants";
 
 const items = [
   {
@@ -26,17 +26,37 @@ const items = [
 
 interface IProps {
   open: boolean;
+  onClose: () => void;
+  isDrawer: boolean;
 }
 
-const Sidebar: React.FC<IProps> = ({ open }) => {
+const Sidebar: React.FC<IProps> = ({ open, onClose, isDrawer }) => {
+  const content = (
+    <List>
+      {items.map(({ url, icon, name }) => (
+        <SidebarItem key={name} url={url} icon={icon} name={name} />
+      ))}
+    </List>
+  );
+
   return (
-    <SidebarContainer className={open ? "visible" : "hidden"}>
-      <List>
-        {items.map(({ url, icon, name }) => (
-          <SidebarItem key={name} url={url} icon={icon} name={name} />
-        ))}
-      </List>
-    </SidebarContainer>
+    <>
+      {isDrawer && (
+        <SidebarDrawer
+          anchor="left"
+          open={open}
+          onClose={onClose}
+          transitionDuration={SIDEBAR.TRANSITION_TIME * 1000}
+        >
+          {content}
+        </SidebarDrawer>
+      )}
+      {!isDrawer && (
+        <SidebarPaper className={open ? "visible" : "hidden"}>
+          {content}
+        </SidebarPaper>
+      )}
+    </>
   );
 };
 
