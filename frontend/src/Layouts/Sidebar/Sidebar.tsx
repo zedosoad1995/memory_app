@@ -4,6 +4,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SidebarItem from "./components/SidebarItem";
 import { SidebarContainer } from "./styles";
+import { useState } from "react";
 
 const items = [
   {
@@ -23,9 +24,13 @@ const items = [
   },
 ];
 
-const Sidebar = () => {
+interface IProps {
+  open: boolean;
+}
+
+const Sidebar: React.FC<IProps> = ({ open }) => {
   return (
-    <SidebarContainer>
+    <SidebarContainer className={open ? "visible" : "hidden"}>
       <List>
         {items.map(({ url, icon, name }) => (
           <SidebarItem key={name} url={url} icon={icon} name={name} />

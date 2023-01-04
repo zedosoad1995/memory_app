@@ -2,9 +2,13 @@ import { Avatar, IconButton, Toolbar } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { DashboardNavbarRoot } from "./styles";
 import { AccountPopover } from "./components/AccountPopover/AccountPopover";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
-const Navbar = () => {
+interface IProps {
+  onToggleSidebar: () => void;
+}
+
+const Navbar: React.FC<IProps> = ({ onToggleSidebar }) => {
   const avatarRef = useRef<HTMLInputElement>(null);
 
   const [openAccountMenu, setOpenAccountMenu] = useState(false);
@@ -28,7 +32,7 @@ const Navbar = () => {
             justifyContent: "space-between",
           }}
         >
-          <IconButton sx={{ mr: 2 }}>
+          <IconButton onClick={onToggleSidebar} sx={{ mr: 2 }}>
             <MenuIcon fontSize="small" />
           </IconButton>
           <Avatar
