@@ -9,24 +9,45 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
-import { IWord } from "../../Types/word";
+import { useEffect, useState } from "react";
+import { IUpdateWord, IWord } from "../../Types/word";
 import { CardNumber, CardRoot } from "./styles";
 
 interface IProps {
   word: IWord;
   cardNum: number;
   totalCards: number;
+  onNextWord: (word: IUpdateWord) => void | Promise<void>;
 }
 
-const CardWord: React.FC<IProps> = ({ word, cardNum, totalCards }) => {
+const CardWord: React.FC<IProps> = ({
+  word,
+  cardNum,
+  totalCards,
+  onNextWord,
+}) => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [knowledge, setKnowledge] = useState(word.knowledge);
   const [relevance, setRelevance] = useState(word.relevance);
-  const [isLearned, setIsLearned] = useState(false);
+  const [isLearned, setIsLearned] = useState(word.isLearned);
+  const [originalWord, setOriginalWord] = useState(word.word);
+  const [translation, setTranslation] = useState(word.translation);
+
+  useEffect(() => {
+    setKnowledge(word.knowledge);
+    setRelevance(word.relevance);
+    setIsLearned(word.isLearned);
+    setOriginalWord(word.word);
+    setTranslation(word.translation);
+  }, [word]);
 
   const handleSeeResult = () => {
     setShowAnswer(true);
+  };
+
+  const handleNextWord = async () => {
+    await onNextWord({ knowledge, relevance, translation, word: originalWord });
+    setShowAnswer(false);
   };
 
   const handleChangeKnowledge = (
@@ -51,6 +72,18 @@ const CardWord: React.FC<IProps> = ({ word, cardNum, totalCards }) => {
     setIsLearned((prev) => !prev);
   };
 
+  const handleWordChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setOriginalWord(event.target.value);
+  };
+
+  const handleTranslationChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setTranslation(event.target.value);
+  };
+
   return (
     <CardRoot>
       <CardNumber>
@@ -60,19 +93,18 @@ const CardWord: React.FC<IProps> = ({ word, cardNum, totalCards }) => {
         <Stack spacing={3}>
           <TextField
             label="Word"
-            value="Mutter (f)"
+            value={originalWord}
             InputProps={{
               readOnly: !showAnswer,
             }}
+            onChange={handleWordChange}
           />
           {showAnswer && (
             <>
               <TextField
                 label="Translation"
-                value="Mother"
-                InputProps={{
-                  readOnly: !showAnswer,
-                }}
+                value={translation}
+                onChange={handleTranslationChange}
               />
               <div style={{ marginLeft: 12 }}>
                 <Stack direction="row">
@@ -105,13 +137,7 @@ const CardWord: React.FC<IProps> = ({ word, cardNum, totalCards }) => {
       </CardContent>
       {showAnswer && (
         <CardActions sx={{ justifyContent: "end" }}>
-          <Button
-            onClick={() => {
-              setShowAnswer(false);
-            }}
-          >
-            Next
-          </Button>
+          <Button onClick={handleNextWord}>Next</Button>
         </CardActions>
       )}
       {!showAnswer && (

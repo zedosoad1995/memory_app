@@ -19,7 +19,9 @@ export const getMany = async (req: Request, res: Response) => {
   const limit = parseLimit(req.query.limit as string | undefined);
   const page = parsePage(req.query.page as string | undefined);
   const offset = calculateOffset(page, limit);
-  const pagination = { limit, offset, order, orderBy };
+
+  const orderObj = orderBy ? { [orderBy]: order } : undefined;
+  const pagination = { limit, offset, order: orderObj };
 
   const [collections, total] = await CollectionService.getMany(
     loggedUser.email,

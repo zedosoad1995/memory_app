@@ -3,7 +3,7 @@ import { DEFAULT_LIMIT, MAX_LIMIT } from "../constants/query";
 export const parseBoolean = (value?: string) => {
   if (!value) return undefined;
 
-  return Boolean(value);
+  return value === "true";
 };
 
 export const parseOrderBy = (

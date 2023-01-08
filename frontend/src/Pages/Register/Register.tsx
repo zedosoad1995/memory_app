@@ -3,10 +3,9 @@ import { Navigate, useNavigate } from "react-router";
 import { register as signUp } from "../../Services/auth";
 import { toast } from "react-hot-toast";
 import MainForm from "./Forms/MainForm";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import OptionsForm from "./Forms/OptionsForm";
 import { isAuth } from "../../Utils/auth";
-import { createCollection } from "../../Services/collection";
 
 interface IFormRef {
   checkValid: () => boolean;
@@ -67,6 +66,20 @@ const Register = () => {
       setFormStage((prev) => prev + 1);
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        handleNextButton();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [formStage]);
 
   if (isAuth()) {
     return <Navigate to="/" />;

@@ -5,7 +5,6 @@ import { calculateDaysDiff } from "../helpers/dateTime";
 import { HttpException } from "../helpers/exception";
 import {
   calculateOffset,
-  greaterThan,
   parseBoolean,
   parseLimit,
   parseOrder,
@@ -23,7 +22,9 @@ export const getMany = async (req: Request, res: Response) => {
   const limit = parseLimit(req.query.limit as string | undefined);
   const page = parsePage(req.query.page as string | undefined);
   const offset = calculateOffset(page, limit);
-  const pagination = { limit, offset, order, orderBy };
+
+  const orderObj = orderBy ? { [orderBy]: order } : undefined;
+  const pagination = { limit, offset, order: orderObj };
 
   const [words, total] = await WordService.getMany(
     { collectionId },
@@ -39,26 +40,30 @@ export const getDailyWords = async (req: Request, res: Response) => {
   const collectionId = req.query.collectionId as string | undefined;
   const isSeen = parseBoolean(req.query.isSeen as string | undefined);
 
-  const limit = Math.min(
-    parseLimit(req.query.limit as string | undefined),
-    loggedUser.numDailyWords
-  );
+  const limit = parseLimit(req.query.limit as string | undefined);
   const page = parsePage(req.query.page as string | undefined);
   const offset = calculateOffset(page, limit);
 
-  const [words, total] = await WordService.getMany(
-    { collectionId, isSeen },
+  let [words, total] = await WordService.getMany(
+    { collectionId },
     loggedUser.email,
     {
-      order: "desc",
-      orderBy: "score",
-      limit,
-      offset,
-    },
-    greaterThan("score", 0)
+      order: { score: "desc", word: "asc" },
+      limit: loggedUser.numDailyWords,
+    }
   );
 
-  res.status(200).json({ words, total });
+  const totalSeen = words.filter((word) => word.isSeen).length;
+  const totalUnseen = words.filter((word) => !word.isSeen).length;
+  if (isSeen != undefined) {
+    words = words.filter((word) => word.isSeen === isSeen);
+  }
+
+  total = words.length;
+
+  words = words.slice(offset, offset + limit);
+
+  res.status(200).json({ words, total, totalSeen, totalUnseen });
 };
 
 export const createOne = async (req: Request, res: Response) => {

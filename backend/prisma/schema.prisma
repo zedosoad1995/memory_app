@@ -34,6 +34,7 @@ model Word {
   score          Int
   createdAtLocal String
   isSeen         Boolean
+  isLearned      Boolean
   tags           Tag[]
   user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   collection     Collection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)

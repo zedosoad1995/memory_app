@@ -1,4 +1,5 @@
 import { Prisma, User } from "@prisma/client";
+import { record } from "zod";
 import prisma from "../../prisma/prisma-client";
 import { IPagination } from "../types/query";
 import { ICreateWord, IUpdateWord, IWordQuery } from "../types/word";
@@ -21,10 +22,8 @@ export const getMany = async (
 
   const findManyQuery = {
     ...baseQuery,
-    orderBy: pagination.orderBy
-      ? {
-          [pagination.orderBy]: pagination.order,
-        }
+    orderBy: pagination?.order
+      ? Object.entries(pagination?.order).map(([k, v]) => ({ [k]: v }))
       : {},
     skip: pagination.offset,
     take: pagination.limit,
@@ -56,6 +55,7 @@ export const createOne = async (data: ICreateWord, user: User) => {
       score: 0,
       createdAtLocal,
       isSeen: false,
+      isLearned: false,
       collection: data.collectionId
         ? {
             connect: {

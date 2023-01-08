@@ -14,21 +14,15 @@ export const getMany = (email: string, pagination: IPagination = {}) => {
         email,
       },
     },
-    orderBy: pagination.orderBy
-      ? {
-          [pagination.orderBy]: pagination.order,
-        }
-      : {},
+    orderBy: pagination.order,
     skip: pagination.offset,
     take: pagination.limit,
   };
 
   const findManyQuery = {
     ...baseQuery,
-    orderBy: pagination.orderBy
-      ? {
-          [pagination.orderBy]: pagination.order,
-        }
+    orderBy: pagination?.order
+      ? Object.entries(pagination?.order).map(([k, v]) => ({ [k]: v }))
       : {},
     skip: pagination.offset,
     take: pagination.limit,
