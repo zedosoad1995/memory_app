@@ -8,6 +8,7 @@ export interface IWord {
   createdAtLocal: string;
   isSeen: boolean;
   isLearned: boolean;
+  toReviewToday: boolean;
   userId: string;
   collectionId: string;
   createdAt: string;
@@ -17,6 +18,10 @@ export interface IWord {
 export interface IWordsResponse {
   words: IWord[];
   total: number;
+}
+
+export interface IDailyWordsResponse {
+  words: IWord[];
   totalSeen: number;
   totalUnseen: number;
 }
@@ -27,4 +32,5 @@ export interface IUpdateWord {
   knowledge?: number;
   relevance?: number;
   isSeen?: boolean;
+  isLearned?: boolean;
 }

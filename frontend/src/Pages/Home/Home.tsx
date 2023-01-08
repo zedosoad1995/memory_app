@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CardWord from "../../Components/CardWord/CardWord";
-import { getDailyWords, updateWord } from "../../Services/word";
+import { getUnreviewsDailyWords, updateWord } from "../../Services/word";
 import { IUpdateWord, IWord } from "../../Types/word";
 
 const Home = () => {
@@ -9,7 +9,7 @@ const Home = () => {
   const [totalCards, setTotalCards] = useState(0);
 
   const fetchDailyWords = async () => {
-    const { words, totalSeen, totalUnseen } = await getDailyWords();
+    const { words, totalSeen, totalUnseen } = await getUnreviewsDailyWords();
 
     if (words.length > 0) {
       setCurrWord(words[0]);

@@ -12,6 +12,7 @@ export interface IUpdateWord {
   knowledge?: number;
   relevance?: number;
   isSeen?: boolean;
+  isLearned?: boolean;
 }
 
 export interface IWordQuery {
@@ -19,4 +20,6 @@ export interface IWordQuery {
   word?: string;
   collectionId?: string | null;
   isSeen?: boolean;
+  isLearned?: boolean;
+  toReviewToday?: boolean;
 }

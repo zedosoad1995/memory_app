@@ -1,5 +1,4 @@
 import { Prisma, User } from "@prisma/client";
-import { record } from "zod";
 import prisma from "../../prisma/prisma-client";
 import { IPagination } from "../types/query";
 import { ICreateWord, IUpdateWord, IWordQuery } from "../types/word";
@@ -56,6 +55,7 @@ export const createOne = async (data: ICreateWord, user: User) => {
       createdAtLocal,
       isSeen: false,
       isLearned: false,
+      toReviewToday: false,
       collection: data.collectionId
         ? {
             connect: {
@@ -82,6 +82,7 @@ export const updateOne = async (data: IUpdateWord, wordId: string) => {
       knowledge: data.knowledge,
       relevance: data.relevance,
       isSeen: data.isSeen,
+      isLearned: data.isLearned,
     },
     where: {
       id: wordId,

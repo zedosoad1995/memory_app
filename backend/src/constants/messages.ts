@@ -37,6 +37,7 @@ export const WORD = {
     RELEVANCE: VALIDATION_MSGS("relevance"),
     COLLECTION_ID: VALIDATION_MSGS("collectionId"),
     IS_SEEN: VALIDATION_MSGS("isSeen"),
+    IS_LEARNED: VALIDATION_MSGS("isLearned"),
   },
 };
 

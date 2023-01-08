@@ -7,7 +7,6 @@ import {
 import {
   createOne,
   deleteOne,
-  getDailyWords,
   getMany,
   updateOne,
   updateScores,
@@ -18,7 +17,6 @@ import { validateForm } from "../middlewares/validateForm";
 const router = Router();
 
 router.get("/", checkAuth, getMany);
-router.get("/daily", checkAuth, getDailyWords);
 router.post("/", checkAuth, validateForm(createWordSchema), createOne);
 router.patch("/:id", checkAuth, validateForm(updateWordSchema), updateOne);
 router.post(

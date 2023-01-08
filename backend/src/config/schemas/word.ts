@@ -69,4 +69,9 @@ export const updateWordSchema = z.object({
       invalid_type_error: WORD.FORM.IS_SEEN.MUST_BE_BOOLEAN,
     })
     .optional(),
+  isLearned: z
+    .boolean({
+      invalid_type_error: WORD.FORM.IS_SEEN.MUST_BE_BOOLEAN,
+    })
+    .optional(),
 });

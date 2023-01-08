@@ -12,12 +12,12 @@ const SidebarItem: React.FC<IProps> = ({ url, icon, name }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const active = url === location.pathname || undefined;
+  const active = url === location.pathname;
 
   return (
     <ListItem>
       <ItemButton
-        active={active}
+        active={active ? 1 : 0}
         onClick={() => {
           navigate(url);
         }}

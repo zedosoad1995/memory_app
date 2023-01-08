@@ -46,7 +46,13 @@ const CardWord: React.FC<IProps> = ({
   };
 
   const handleNextWord = async () => {
-    await onNextWord({ knowledge, relevance, translation, word: originalWord });
+    await onNextWord({
+      knowledge,
+      relevance,
+      translation,
+      word: originalWord,
+      isLearned,
+    });
     setShowAnswer(false);
   };
 
@@ -106,31 +112,35 @@ const CardWord: React.FC<IProps> = ({
                 value={translation}
                 onChange={handleTranslationChange}
               />
-              <div style={{ marginLeft: 12 }}>
-                <Stack direction="row">
-                  <div style={{ flexGrow: 0.5 }}>
-                    <Typography component="legend">Relevance</Typography>
-                    <Rating
-                      value={relevance}
-                      onChange={handleChangeRelevance}
-                      sx={{ width: "fit-content" }}
-                    />
-                  </div>
-                  <div style={{ flexGrow: 0.5 }}>
-                    <Typography component="legend">Knowlege</Typography>
-                    <Rating
-                      value={knowledge}
-                      onChange={handleChangeKnowledge}
-                      sx={{ width: "fit-content" }}
-                    />
-                  </div>
-                </Stack>
-              </div>
-              <FormControlLabel
-                sx={{ width: "fit-content" }}
-                control={<Checkbox value={isLearned} onClick={handleLearned} />}
-                label="Is Learned"
-              />
+              <Stack spacing={1.5}>
+                <div style={{ marginLeft: 12 }}>
+                  <Stack direction="row">
+                    <div style={{ flexGrow: 0.5 }}>
+                      <Typography component="legend">Relevance</Typography>
+                      <Rating
+                        value={relevance}
+                        onChange={handleChangeRelevance}
+                        sx={{ width: "fit-content" }}
+                      />
+                    </div>
+                    <div style={{ flexGrow: 0.5 }}>
+                      <Typography component="legend">Knowlege</Typography>
+                      <Rating
+                        value={knowledge}
+                        onChange={handleChangeKnowledge}
+                        sx={{ width: "fit-content" }}
+                      />
+                    </div>
+                  </Stack>
+                </div>
+                <FormControlLabel
+                  sx={{ width: "fit-content" }}
+                  control={
+                    <Checkbox value={isLearned} onClick={handleLearned} />
+                  }
+                  label="Is Learned"
+                />
+              </Stack>
             </>
           )}
         </Stack>

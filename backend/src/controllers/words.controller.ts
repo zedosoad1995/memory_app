@@ -17,6 +17,10 @@ import * as WordService from "../services/words.service";
 export const getMany = async (req: Request, res: Response) => {
   const { user: loggedUser } = res.locals;
   const collectionId = req.query.collectionId as string | undefined;
+  const isSeen = parseBoolean(req.query.isSeen as string | undefined);
+  const toReviewToday = parseBoolean(
+    req.query.toReviewToday as string | undefined
+  );
   const orderBy = parseOrderBy(req.query.orderBy as string | undefined, "word");
   const order = parseOrder(req.query.order as string | undefined, "asc");
   const limit = parseLimit(req.query.limit as string | undefined);
@@ -27,43 +31,12 @@ export const getMany = async (req: Request, res: Response) => {
   const pagination = { limit, offset, order: orderObj };
 
   const [words, total] = await WordService.getMany(
-    { collectionId },
+    { collectionId, isSeen, toReviewToday },
     loggedUser.email,
     pagination
   );
 
   res.status(200).json({ words, total });
-};
-
-export const getDailyWords = async (req: Request, res: Response) => {
-  const { user: loggedUser } = res.locals as unknown as { user: User };
-  const collectionId = req.query.collectionId as string | undefined;
-  const isSeen = parseBoolean(req.query.isSeen as string | undefined);
-
-  const limit = parseLimit(req.query.limit as string | undefined);
-  const page = parsePage(req.query.page as string | undefined);
-  const offset = calculateOffset(page, limit);
-
-  let [words, total] = await WordService.getMany(
-    { collectionId },
-    loggedUser.email,
-    {
-      order: { score: "desc", word: "asc" },
-      limit: loggedUser.numDailyWords,
-    }
-  );
-
-  const totalSeen = words.filter((word) => word.isSeen).length;
-  const totalUnseen = words.filter((word) => !word.isSeen).length;
-  if (isSeen != undefined) {
-    words = words.filter((word) => word.isSeen === isSeen);
-  }
-
-  total = words.length;
-
-  words = words.slice(offset, offset + limit);
-
-  res.status(200).json({ words, total, totalSeen, totalUnseen });
 };
 
 export const createOne = async (req: Request, res: Response) => {
@@ -96,12 +69,14 @@ export const updateScores = async (req: Request, res: Response) => {
     currentDateLocal
   );
 
-  await updateWordsScore(
-    collectionId,
-    loggedUser.email,
-    currentDateLocal,
-    nDaysSinceLastUpdate
-  );
+  if (nDaysSinceLastUpdate > 0) {
+    await updateWordsScore(
+      collectionId,
+      loggedUser,
+      currentDateLocal,
+      nDaysSinceLastUpdate
+    );
+  }
 
   res.status(204).json({});
 };
