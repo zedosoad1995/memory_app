@@ -7,6 +7,7 @@ export const MainContent = styled("div")({
     marginLeft: SIDEBAR.WIDTH,
   },
   "&.hidden": {
-    marginLeft: "0",
+    marginLeft: 0,
   },
+  padding: "24px",
 });

@@ -3,6 +3,7 @@ import PrivateRoutes from "./Pages/PrivateRoutes";
 import Layout from "./Layouts";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
+import Home from "./Pages/Home/Home";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <div>Home</div>,
+            element: <Home />,
           },
           {
             path: "/words",
