@@ -1,3 +1,5 @@
+export const EMPTY_FIELD = "This field cannot be empty";
+
 export const USER = {
   FORM: {
     EMAIL: {

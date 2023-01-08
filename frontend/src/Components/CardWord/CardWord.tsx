@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { EMPTY_FIELD } from "../../Constants/messages";
 import { IUpdateWord, IWord } from "../../Types/word";
 import { CardNumber, CardRoot } from "./styles";
 
@@ -31,7 +32,9 @@ const CardWord: React.FC<IProps> = ({
   const [relevance, setRelevance] = useState(word.relevance);
   const [isLearned, setIsLearned] = useState(word.isLearned);
   const [originalWord, setOriginalWord] = useState(word.word);
+  const [originalWordError, setOriginalWordError] = useState("");
   const [translation, setTranslation] = useState(word.translation);
+  const [translationError, setTranslationError] = useState("");
 
   useEffect(() => {
     setKnowledge(word.knowledge);
@@ -39,6 +42,8 @@ const CardWord: React.FC<IProps> = ({
     setIsLearned(word.isLearned);
     setOriginalWord(word.word);
     setTranslation(word.translation);
+    setOriginalWordError("");
+    setTranslationError("");
   }, [word]);
 
   const handleSeeResult = () => {
@@ -82,12 +87,22 @@ const CardWord: React.FC<IProps> = ({
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     setOriginalWord(event.target.value);
+    if (event.target.value.length === 0) {
+      setOriginalWordError(EMPTY_FIELD);
+    } else {
+      setOriginalWordError("");
+    }
   };
 
   const handleTranslationChange = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     setTranslation(event.target.value);
+    if (event.target.value.length === 0) {
+      setTranslationError(EMPTY_FIELD);
+    } else {
+      setTranslationError("");
+    }
   };
 
   return (
@@ -104,6 +119,8 @@ const CardWord: React.FC<IProps> = ({
               readOnly: !showAnswer,
             }}
             onChange={handleWordChange}
+            error={originalWordError !== ""}
+            helperText={originalWordError}
           />
           {showAnswer && (
             <>
@@ -111,6 +128,8 @@ const CardWord: React.FC<IProps> = ({
                 label="Translation"
                 value={translation}
                 onChange={handleTranslationChange}
+                error={translationError !== ""}
+                helperText={translationError}
               />
               <Stack spacing={1.5}>
                 <div style={{ marginLeft: 12 }}>
