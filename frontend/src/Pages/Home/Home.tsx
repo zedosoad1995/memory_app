@@ -1,5 +1,8 @@
+import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import CardWord from "../../Components/CardWord/CardWord";
+import PageContent from "../../Components/PageContent/PageContent";
+import PageHeader from "../../Components/PageHeader/PageHeader";
 import { getUnreviewsDailyWords, updateWord } from "../../Services/word";
 import { IUpdateWord, IWord } from "../../Types/word";
 
@@ -33,14 +36,16 @@ const Home = () => {
 
   return (
     <>
-      {currWord && (
-        <CardWord
-          word={currWord}
-          cardNum={cardNum}
-          totalCards={totalCards}
-          onNextWord={handleNextWord}
-        />
-      )}
+      <PageContent>
+        {currWord && (
+          <CardWord
+            word={currWord}
+            cardNum={cardNum}
+            totalCards={totalCards}
+            onNextWord={handleNextWord}
+          />
+        )}
+      </PageContent>
     </>
   );
 };

@@ -2,6 +2,7 @@ import { List } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import SettingsIcon from "@mui/icons-material/Settings";
+import AddIcon from "@mui/icons-material/Add";
 import SidebarItem from "./components/SidebarItem";
 import { SidebarDrawer, SidebarPaper } from "./styles";
 import { SIDEBAR } from "../../Theme/constants";
@@ -21,6 +22,11 @@ const items = [
     url: "/settings",
     icon: <SettingsIcon />,
     name: "Settings",
+  },
+  {
+    url: "/words/create",
+    icon: <AddIcon />,
+    name: "Add Word",
   },
 ];
 

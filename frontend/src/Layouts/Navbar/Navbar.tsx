@@ -1,8 +1,9 @@
-import { Avatar, IconButton, Toolbar } from "@mui/material";
+import { Avatar, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { DashboardNavbarRoot } from "./styles";
 import { AccountPopover } from "./components/AccountPopover/AccountPopover";
 import React, { useRef, useState } from "react";
+import { NAVBAR } from "../../Theme/constants";
 
 interface IProps {
   onToggleSidebar: () => void;
@@ -23,18 +24,19 @@ const Navbar: React.FC<IProps> = ({ onToggleSidebar }) => {
 
   return (
     <>
-      <DashboardNavbarRoot position="static">
+      <DashboardNavbarRoot position="fixed">
         <Toolbar
           disableGutters
           sx={{
-            minHeight: 64,
+            minHeight: NAVBAR.HEIGHT,
             px: 2,
-            justifyContent: "space-between",
           }}
         >
-          <IconButton onClick={onToggleSidebar} sx={{ mr: 2 }}>
-            <MenuIcon fontSize="small" />
-          </IconButton>
+          <div style={{ flexGrow: 1 }}>
+            <IconButton onClick={onToggleSidebar} sx={{ mr: 2, flexGrow: 1 }}>
+              <MenuIcon fontSize="small" />
+            </IconButton>
+          </div>
           <Avatar
             onClick={handleClickAvatar}
             ref={avatarRef}

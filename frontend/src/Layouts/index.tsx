@@ -1,7 +1,8 @@
-import { useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { Outlet } from "react-router";
 import { theme } from "../Theme";
+import { NAVBAR } from "../Theme/constants";
 import Navbar from "./Navbar/Navbar";
 import Sidebar from "./Sidebar/Sidebar";
 import { MainContent } from "./styles";
@@ -27,11 +28,13 @@ const Layout = () => {
         onClose={handleCloseSidebar}
         isDrawer={isSidebarDrawer}
       />
-      <MainContent
-        className={isSidebarOpen && !isSidebarDrawer ? "visible" : "hidden"}
-      >
-        <Outlet />
-      </MainContent>
+      <Box sx={{ paddingTop: `${NAVBAR.HEIGHT}px` }}>
+        <MainContent
+          className={isSidebarOpen && !isSidebarDrawer ? "visible" : "hidden"}
+        >
+          <Outlet />
+        </MainContent>
+      </Box>
     </>
   );
 };

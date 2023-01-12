@@ -14,7 +14,11 @@ const PasswordField: React.FC<IProps> = ({ register, error, helperText }) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handlePasswordToggle = () => {
+  const handlePasswordToggle = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+
     setShowPassword((prev) => !prev);
     if (inputRef.current) {
       inputRef.current.focus();

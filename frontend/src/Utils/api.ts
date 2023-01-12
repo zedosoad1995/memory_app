@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import { toast } from "react-hot-toast";
+import { logout } from "./auth";
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -20,8 +21,8 @@ instance.interceptors.response.use(
   },
   (error: AxiosError) => {
     if (error.response?.status === 401) {
-      // Unauthenticated error
-      // Redirect to login page or show an error message
+      logout();
+      window.location.reload();
       return;
     }
 

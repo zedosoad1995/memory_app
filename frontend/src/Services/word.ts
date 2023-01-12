@@ -1,4 +1,9 @@
-import { IWord, IUpdateWord, IDailyWordsResponse } from "../Types/word";
+import {
+  IWord,
+  IUpdateWord,
+  IDailyWordsResponse,
+  ICreateWord,
+} from "../Types/word";
 import Api from "../Utils/api";
 
 export const getDailyWords = async (): Promise<IDailyWordsResponse> => {
@@ -38,6 +43,10 @@ export const getUnreviewsDailyWords =
 
     return { words, totalSeen, totalUnseen };
   };
+
+export const createWord = async (word: ICreateWord): Promise<IWord> => {
+  return Api.post("/words", word);
+};
 
 export const updateWord = async (
   id: string,

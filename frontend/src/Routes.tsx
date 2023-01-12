@@ -4,6 +4,7 @@ import Layout from "./Layouts";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
 import Home from "./Pages/Home/Home";
+import AddWord from "./Pages/AddWord/AddWord";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
           {
             path: "/words",
             element: <div>Words</div>,
+          },
+          {
+            path: "/words/create",
+            element: <AddWord />,
           },
           {
             path: "/settings",
