@@ -22,6 +22,8 @@ export const getUnreviewsDailyWords =
       params: {
         toReviewToday: true,
         isSeen: false,
+        orderBy: "score",
+        order: "desc",
       },
     });
 
@@ -53,4 +55,8 @@ export const updateWord = async (
   word: IUpdateWord
 ): Promise<IWord> => {
   return Api.patch(`/words/${id}`, word);
+};
+
+export const updateScores = async (): Promise<void> => {
+  return Api.post("/words/update_scores");
 };

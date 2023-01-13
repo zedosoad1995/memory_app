@@ -20,7 +20,7 @@ router.get("/", checkAuth, getMany);
 router.post("/", checkAuth, validateForm(createWordSchema), createOne);
 router.patch("/:id", checkAuth, validateForm(updateWordSchema), updateOne);
 router.post(
-  "/scores",
+  "/update_scores",
   checkAuth,
   validateForm(updateWordScoresSchema),
   updateScores

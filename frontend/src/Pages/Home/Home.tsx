@@ -1,9 +1,11 @@
-import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import CardWord from "../../Components/CardWord/CardWord";
 import PageContent from "../../Components/PageContent/PageContent";
-import PageHeader from "../../Components/PageHeader/PageHeader";
-import { getUnreviewsDailyWords, updateWord } from "../../Services/word";
+import {
+  getUnreviewsDailyWords,
+  updateScores,
+  updateWord,
+} from "../../Services/word";
 import { IUpdateWord, IWord } from "../../Types/word";
 
 const Home = () => {
@@ -24,7 +26,12 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchDailyWords();
+    const init = async () => {
+      await updateScores();
+      await fetchDailyWords();
+    };
+
+    init();
   }, []);
 
   const handleNextWord = async (word: IUpdateWord) => {
