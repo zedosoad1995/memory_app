@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   CardActions,
@@ -10,9 +11,18 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { EMPTY_FIELD } from "../../Constants/messages";
+import { useForm, Controller } from "react-hook-form";
+import { wordSchema } from "../../Config/Schemas/word";
 import { IUpdateWord, IWord } from "../../Types/word";
 import { CardNumber, CardRoot } from "./styles";
+
+interface IFormData {
+  word: string;
+  translation: string;
+  knowledge: number;
+  relevance: number;
+  isLearned: boolean;
+}
 
 interface IProps {
   word: IWord;
@@ -28,153 +38,136 @@ const CardWord: React.FC<IProps> = ({
   onNextWord,
 }) => {
   const [showAnswer, setShowAnswer] = useState(false);
-  const [knowledge, setKnowledge] = useState(word.knowledge);
-  const [relevance, setRelevance] = useState(word.relevance);
-  const [isLearned, setIsLearned] = useState(word.isLearned);
-  const [originalWord, setOriginalWord] = useState(word.word);
-  const [originalWordError, setOriginalWordError] = useState("");
-  const [translation, setTranslation] = useState(word.translation);
-  const [translationError, setTranslationError] = useState("");
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<IFormData>({
+    resolver: zodResolver(wordSchema),
+    defaultValues: {
+      word: word.word,
+      translation: word.translation,
+      knowledge: word.knowledge,
+      relevance: word.relevance,
+      isLearned: word.isLearned,
+    },
+    mode: "onChange",
+  });
 
   useEffect(() => {
-    setKnowledge(word.knowledge);
-    setRelevance(word.relevance);
-    setIsLearned(word.isLearned);
-    setOriginalWord(word.word);
-    setTranslation(word.translation);
-    setOriginalWordError("");
-    setTranslationError("");
+    setValue("word", word.word);
+    setValue("translation", word.translation);
+    setValue("knowledge", word.knowledge);
+    setValue("relevance", word.relevance);
+    setValue("isLearned", word.isLearned);
   }, [word]);
 
   const handleSeeResult = () => {
     setShowAnswer(true);
   };
 
-  const handleNextWord = async () => {
+  const handleNextWord = async (data: IFormData) => {
     await onNextWord({
-      knowledge,
-      relevance,
-      translation,
-      word: originalWord,
-      isLearned,
+      word: data.word,
+      translation: data.translation,
+      knowledge: data.knowledge,
+      relevance: data.relevance,
+      isLearned: data.isLearned,
     });
     setShowAnswer(false);
   };
 
-  const handleChangeKnowledge = (
-    event: React.SyntheticEvent<Element, Event>,
-    value: number | null
-  ) => {
-    if (value && value > 0) {
-      setKnowledge(value);
-    }
-  };
-
-  const handleChangeRelevance = (
-    event: React.SyntheticEvent<Element, Event>,
-    value: number | null
-  ) => {
-    if (value && value > 0) {
-      setRelevance(value);
-    }
-  };
-
-  const handleLearned = () => {
-    setIsLearned((prev) => !prev);
-  };
-
-  const handleWordChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
-    setOriginalWord(event.target.value);
-    if (event.target.value.length === 0) {
-      setOriginalWordError(EMPTY_FIELD);
-    } else {
-      setOriginalWordError("");
-    }
-  };
-
-  const handleTranslationChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
-    setTranslation(event.target.value);
-    if (event.target.value.length === 0) {
-      setTranslationError(EMPTY_FIELD);
-    } else {
-      setTranslationError("");
-    }
-  };
+  const handleRatingChange =
+    (label: "knowledge" | "relevance") =>
+    (event: React.SyntheticEvent<Element, Event>, value: number | null) => {
+      if (value && value > 0) {
+        setValue(label, value);
+      }
+    };
 
   return (
-    <CardRoot>
-      <CardNumber>
-        {cardNum}/{totalCards}
-      </CardNumber>
-      <CardContent>
-        <Stack spacing={3}>
-          <TextField
-            label="Word"
-            value={originalWord}
-            InputProps={{
-              readOnly: !showAnswer,
-            }}
-            onChange={handleWordChange}
-            error={originalWordError !== ""}
-            helperText={originalWordError}
-          />
-          {showAnswer && (
-            <>
-              <TextField
-                label="Translation"
-                value={translation}
-                onChange={handleTranslationChange}
-                error={translationError !== ""}
-                helperText={translationError}
-              />
-              <Stack spacing={1.5}>
-                <div style={{ marginLeft: 12 }}>
-                  <Stack direction="row">
-                    <div style={{ flexGrow: 0.5 }}>
-                      <Typography component="legend">Relevance</Typography>
-                      <Rating
-                        value={relevance}
-                        onChange={handleChangeRelevance}
-                        sx={{ width: "fit-content" }}
-                      />
-                    </div>
-                    <div style={{ flexGrow: 0.5 }}>
-                      <Typography component="legend">Knowlege</Typography>
-                      <Rating
-                        value={knowledge}
-                        onChange={handleChangeKnowledge}
-                        sx={{ width: "fit-content" }}
-                      />
-                    </div>
-                  </Stack>
-                </div>
-                <FormControlLabel
-                  sx={{ width: "fit-content" }}
-                  control={
-                    <Checkbox value={isLearned} onClick={handleLearned} />
-                  }
-                  label="Is Learned"
+    <form noValidate onSubmit={handleSubmit(handleNextWord)}>
+      <CardRoot>
+        <CardNumber>
+          {cardNum}/{totalCards}
+        </CardNumber>
+        <CardContent>
+          <Stack spacing={3}>
+            <TextField
+              label="Word"
+              {...register("word")}
+              InputProps={{
+                readOnly: !showAnswer,
+              }}
+              error={Boolean(errors.word)}
+              helperText={errors.word?.message ?? ""}
+            />
+            {showAnswer && (
+              <>
+                <TextField
+                  label="Translation"
+                  {...register("translation")}
+                  error={Boolean(errors.translation)}
+                  helperText={errors.translation?.message ?? ""}
                 />
-              </Stack>
-            </>
-          )}
-        </Stack>
-      </CardContent>
-      {showAnswer && (
-        <CardActions sx={{ justifyContent: "end" }}>
-          <Button onClick={handleNextWord}>Next</Button>
-        </CardActions>
-      )}
-      {!showAnswer && (
-        <CardActions sx={{ justifyContent: "center" }}>
-          <Button onClick={handleSeeResult}>See Answer</Button>
-        </CardActions>
-      )}
-    </CardRoot>
+                <Stack spacing={1.5}>
+                  <div style={{ marginLeft: 12 }}>
+                    <Stack direction="row">
+                      <div style={{ flexGrow: 0.5 }}>
+                        <Typography component="legend">Relevance</Typography>
+                        <Controller
+                          name="relevance"
+                          control={control}
+                          render={({ field: { value } }) => (
+                            <Rating
+                              value={value}
+                              onChange={handleRatingChange("relevance")}
+                              sx={{ width: "fit-content" }}
+                            />
+                          )}
+                        />
+                      </div>
+                      <div style={{ flexGrow: 0.5 }}>
+                        <Typography component="legend">Knowledge</Typography>
+                        <Controller
+                          name="knowledge"
+                          control={control}
+                          render={({ field: { value } }) => (
+                            <Rating
+                              value={value}
+                              onChange={handleRatingChange("knowledge")}
+                              sx={{ width: "fit-content" }}
+                            />
+                          )}
+                        />
+                      </div>
+                    </Stack>
+                  </div>
+                  <FormControlLabel
+                    sx={{ width: "fit-content" }}
+                    control={<Checkbox {...register("isLearned")} />}
+                    label="Is Learned"
+                  />
+                </Stack>
+              </>
+            )}
+          </Stack>
+        </CardContent>
+        {showAnswer && (
+          <CardActions sx={{ justifyContent: "end" }}>
+            <Button type="submit">Next</Button>
+          </CardActions>
+        )}
+        {!showAnswer && (
+          <CardActions sx={{ justifyContent: "center" }}>
+            <Button onClick={handleSeeResult}>See Answer</Button>
+          </CardActions>
+        )}
+      </CardRoot>
+    </form>
   );
 };
 

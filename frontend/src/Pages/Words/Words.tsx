@@ -1,5 +1,4 @@
 import {
-  Box,
   Card,
   Checkbox,
   Rating,
@@ -56,7 +55,7 @@ const Words: React.FC = () => {
         </TableHead>
         <TableBody>
           {words.map(({ id, word, translation, relevance, knowledge }) => (
-            <TableRow key={id}>
+            <TableRow key={id} hover sx={{ cursor: "pointer" }}>
               <TableCell>{word}</TableCell>
               <TableCell>{translation}</TableCell>
               <TableCell>

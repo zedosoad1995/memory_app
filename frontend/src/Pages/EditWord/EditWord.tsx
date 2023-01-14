@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { EMPTY_FIELD } from "../../Constants/messages";
 import { createWord } from "../../Services/word";
 import { CardRoot } from "./styles";
 
@@ -48,7 +50,7 @@ const AddWord: React.FC = () => {
   ) => {
     setOriginalWord(event.target.value);
     if (event.target.value.length === 0) {
-      setOriginalWordError("EMPTY_FIELD");
+      setOriginalWordError(EMPTY_FIELD);
     } else {
       setOriginalWordError("");
     }
@@ -59,7 +61,7 @@ const AddWord: React.FC = () => {
   ) => {
     setTranslation(event.target.value);
     if (event.target.value.length === 0) {
-      setTranslationError("EMPTY_FIELD");
+      setTranslationError(EMPTY_FIELD);
     } else {
       setTranslationError("");
     }
