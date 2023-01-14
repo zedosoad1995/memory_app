@@ -3,8 +3,13 @@ import {
   IUpdateWord,
   IDailyWordsResponse,
   ICreateWord,
+  IWordsResponse,
 } from "../Types/word";
 import Api from "../Utils/api";
+
+export const getWords = async (): Promise<IWordsResponse> => {
+  return Api.get("/words");
+};
 
 export const getDailyWords = async (): Promise<IDailyWordsResponse> => {
   return Api.get("/words", {

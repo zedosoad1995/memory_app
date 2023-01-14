@@ -77,7 +77,7 @@ const AddWord: React.FC = () => {
       relevance,
     });
 
-    toast.success("Word successfully created.");
+    toast.success("Word successfully added.");
     setOriginalWord(DEFAULT_WORD);
     setTranslation(DEFAULT_TRANSLATION);
     setKnowledge(DEFAULT_KNOWLEDGE);

@@ -1,3 +1,5 @@
+import palette from "./palette";
+
 export default {
   MuiButton: {
     defaultProps: {
@@ -91,7 +93,7 @@ export default {
   MuiTableHead: {
     styleOverrides: {
       root: {
-        backgroundColor: "#F3F4F6",
+        backgroundColor: palette.neutral[100],
         ".MuiTableCell-root": {
           color: "#374151",
         },
