@@ -6,6 +6,7 @@ import Register from "./Pages/Register/Register";
 import Home from "./Pages/Home/Home";
 import AddWord from "./Pages/AddWord/AddWord";
 import Words from "./Pages/Words/Words";
+import EditWord from "./Pages/EditWord/EditWord";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
           {
             path: "/words/create",
             element: <AddWord />,
+          },
+          {
+            path: "/words/:id",
+            element: <EditWord />,
           },
           {
             path: "/settings",

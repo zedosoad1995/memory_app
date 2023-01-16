@@ -39,6 +39,16 @@ export const getMany = async (req: Request, res: Response) => {
   res.status(200).json({ words, total });
 };
 
+export const getOne = async (req: Request, res: Response) => {
+  const { user: loggedUser } = res.locals;
+  const id = req.params.id;
+  const collectionId = req.query.collectionId as string | undefined;
+
+  const word = await WordService.getOne({ id, collectionId }, loggedUser.email);
+
+  res.status(200).json({ word });
+};
+
 export const createOne = async (req: Request, res: Response) => {
   const { user: loggedUser } = res.locals;
   const { word, collectionId } = req.body;

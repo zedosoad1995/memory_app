@@ -20,6 +20,10 @@ export interface IWordsResponse {
   total: number;
 }
 
+export interface IWordResponse {
+  word: IWord;
+}
+
 export interface IDailyWordsResponse {
   words: IWord[];
   totalSeen: number;

@@ -8,6 +8,7 @@ import {
   createOne,
   deleteOne,
   getMany,
+  getOne,
   updateOne,
   updateScores,
 } from "../controllers/words.controller";
@@ -17,6 +18,7 @@ import { validateForm } from "../middlewares/validateForm";
 const router = Router();
 
 router.get("/", checkAuth, getMany);
+router.get("/:id", checkAuth, getOne);
 router.post("/", checkAuth, validateForm(createWordSchema), createOne);
 router.patch("/:id", checkAuth, validateForm(updateWordSchema), updateOne);
 router.post(

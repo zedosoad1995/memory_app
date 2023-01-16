@@ -9,11 +9,14 @@ import {
   TableRow,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { getWords, updateWord } from "../../Services/word";
 import { IWord } from "../../Types/word";
 import { TableHeadCell } from "./styles";
 
 const Words: React.FC = () => {
+  const navigate = useNavigate();
+
   const [words, setWords] = useState<IWord[]>([]);
   const [learnedWords, setLearnedWords] = useState<{
     [key: string]: boolean;
@@ -37,6 +40,10 @@ const Words: React.FC = () => {
       });
     };
 
+  const handleRowClick = (wordId: string) => () => {
+    navigate(wordId);
+  };
+
   useEffect(() => {
     fetchWords();
   }, []);
@@ -55,7 +62,12 @@ const Words: React.FC = () => {
         </TableHead>
         <TableBody>
           {words.map(({ id, word, translation, relevance, knowledge }) => (
-            <TableRow key={id} hover sx={{ cursor: "pointer" }}>
+            <TableRow
+              key={id}
+              hover
+              onClick={handleRowClick(id)}
+              sx={{ cursor: "pointer" }}
+            >
               <TableCell>{word}</TableCell>
               <TableCell>{translation}</TableCell>
               <TableCell>

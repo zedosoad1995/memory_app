@@ -4,11 +4,16 @@ import {
   IDailyWordsResponse,
   ICreateWord,
   IWordsResponse,
+  IWordResponse,
 } from "../Types/word";
 import Api from "../Utils/api";
 
 export const getWords = async (): Promise<IWordsResponse> => {
   return Api.get("/words");
+};
+
+export const getWord = async (id: string): Promise<IWordResponse> => {
+  return Api.get(`/words/${id}`);
 };
 
 export const getDailyWords = async (): Promise<IDailyWordsResponse> => {
