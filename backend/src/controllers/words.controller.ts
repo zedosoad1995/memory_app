@@ -18,9 +18,14 @@ export const getMany = async (req: Request, res: Response) => {
   const { user: loggedUser } = res.locals;
   const collectionId = req.query.collectionId as string | undefined;
   const isSeen = parseBoolean(req.query.isSeen as string | undefined);
+  const isLearned = parseBoolean(req.query.isLearned as string | undefined);
   const toReviewToday = parseBoolean(
     req.query.toReviewToday as string | undefined
   );
+  const orFields = req.query.or as string | undefined;
+  let orQuery;
+  if (orFields) orQuery = { OR: JSON.parse(orFields) };
+
   const orderBy = parseOrderBy(req.query.orderBy as string | undefined, "word");
   const order = parseOrder(req.query.order as string | undefined, "asc");
   const limit = parseLimit(req.query.limit as string | undefined);
@@ -31,9 +36,10 @@ export const getMany = async (req: Request, res: Response) => {
   const pagination = { limit, offset, order: orderObj };
 
   const [words, total] = await WordService.getMany(
-    { collectionId, isSeen, toReviewToday },
+    { collectionId, isSeen, toReviewToday, isLearned },
     loggedUser.email,
-    pagination
+    pagination,
+    orQuery
   );
 
   res.status(200).json({ words, total });

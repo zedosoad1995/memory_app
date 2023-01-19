@@ -6,6 +6,7 @@ import { IWord } from "../../Types/word";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { IconButton, Typography } from "@mui/material";
 import { TitleDiv } from "./styles";
+import PageContent from "../../Components/PageContent/PageContent";
 
 const EditWord: React.FC = () => {
   const { id } = useParams();

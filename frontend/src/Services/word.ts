@@ -32,6 +32,7 @@ export const getUnreviewsDailyWords =
       params: {
         toReviewToday: true,
         isSeen: false,
+        isLearned: false,
         orderBy: "score",
         order: "desc",
       },
@@ -45,7 +46,7 @@ export const getUnreviewsDailyWords =
     res = await Api.get("/words", {
       params: {
         toReviewToday: true,
-        isSeen: true,
+        or: JSON.stringify([{ isSeen: true }, { isLearned: true }]),
       },
     });
 

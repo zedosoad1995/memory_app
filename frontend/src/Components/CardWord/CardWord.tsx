@@ -10,7 +10,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { getValue } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -55,6 +54,7 @@ const CardWord: React.FC<IProps> = ({
     control,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<IFormData>({
     resolver: zodResolver(wordSchema),
@@ -211,11 +211,21 @@ const CardWord: React.FC<IProps> = ({
                     </Stack>
                   </div>
                   {mode !== "create" && (
-                    <FormControlLabel
-                      sx={{ width: "fit-content" }}
-                      control={<Checkbox {...register("isLearned")} />}
-                      label="Is Learned"
-                    />
+                    <>
+                      <Controller
+                        name="isLearned"
+                        control={control}
+                        render={({ field: { value, onChange } }) => (
+                          <FormControlLabel
+                            sx={{ width: "fit-content" }}
+                            control={
+                              <Checkbox checked={value} onChange={onChange} />
+                            }
+                            label="Is Learned"
+                          />
+                        )}
+                      />
+                    </>
                   )}
                 </Stack>
               </>
