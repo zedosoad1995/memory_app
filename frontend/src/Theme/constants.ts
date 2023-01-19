@@ -6,3 +6,7 @@ export const SIDEBAR = {
 export const NAVBAR = {
   HEIGHT: 64,
 };
+
+export const CARD = {
+  MAX_WIDTH: 600,
+};
