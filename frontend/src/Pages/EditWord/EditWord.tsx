@@ -6,11 +6,12 @@ import { IWord } from "../../Types/word";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { IconButton, Typography } from "@mui/material";
 import { TitleDiv } from "./styles";
-import PageContent from "../../Components/PageContent/PageContent";
+import { useLocation } from "react-router-dom";
 
 const EditWord: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [word, setWord] = useState<IWord>();
 
@@ -23,7 +24,7 @@ const EditWord: React.FC = () => {
   }, [id]);
 
   const handleBack = () => {
-    navigate("/words");
+    navigate(location.state ?? "/words");
   };
 
   return (

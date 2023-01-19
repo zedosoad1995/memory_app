@@ -32,10 +32,6 @@ app.use(
   }
 );
 
-process.on("uncaughtException", (err) => {
-  console.error(err);
-});
-
 app.listen(3000, () => {
   console.log("Server listening on port 3000");
 });

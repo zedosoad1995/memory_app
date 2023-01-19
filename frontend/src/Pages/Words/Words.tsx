@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import PageContent from "../../Components/PageContent/PageContent";
 import { getWords, updateWord } from "../../Services/word";
 import { IWord } from "../../Types/word";
 import { TableHeadCell } from "./styles";
